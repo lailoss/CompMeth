@@ -8,7 +8,7 @@ function simulateQueue(cust, x, y)
     pricePerLiter = zeros(1, cust); % --price per litre--
     totalPrice = zeros(1, cust);    % --total cost--
 
-    arrivalTime = zeros(1, cust);
+    arrivalTime = zeros(1, cust);   
     interArrTime = zeros(1, cust);
     RN_arrival = zeros(1, cust);
 
@@ -22,14 +22,14 @@ function simulateQueue(cust, x, y)
     pumpUsed = zeros(1, cust);
     lineUsed = zeros(1, cust);
 
-    pumpTime = zeros(1,4);
-    lineMap = [1 1 2 2];
+    pumpTime = zeros(1,4); % --time when each pump becomes free--
+    lineMap = [1 1 2 2]; % --map pump to line: 1&2 to line 1, 3&4 to line 2--
 
     % -- load interarrival time basedd on peak hours or not --
     if y == 9
-       inter = interArrivalTime('p');
+       inter = interArrivalTime('p'); $ -- peak --
     else
-       inter = interArrivalTime('n');
+       inter = interArrivalTime('n'); $ -- non peak --
     end
 
     pt = petrolType();
@@ -88,10 +88,10 @@ function simulateQueue(cust, x, y)
         if i == 1
             arrivalTime(i) = 0;
         else
-            arrivalTime(i) = arrivalTime(i-1) + interArrTime(i);
+            arrivalTime(i) = arrivalTime(i-1) + interArrTime(i); % -- add arrival --
         end
 
-        % RNG for refueling time
+        % -- RNG for refueling time --
         if x == 1
             RN_refuel(i) = mixedLCG(100);
         elseif x == 2
@@ -100,7 +100,7 @@ function simulateQueue(cust, x, y)
             RN_refuel(i) = mulLCG(100);
         end
 
-        % determine refueling duration
+        % -- determine refueling duration dari CDF --
         for j = 1:length(rt.cdf)
             if RN_refuel(i) <= rt.cdf(j)*100
                 refuelTime(i) = rt.time(j);
@@ -108,14 +108,14 @@ function simulateQueue(cust, x, y)
             end
         end
 
-        % check for available pump
+        % -- check for available pump --
         assigned = false;
         for j = 1:4
             if pumpTime(j) <= arrivalTime(i)
-                timeStart(i) = arrivalTime(i);
+                timeStart(i) = arrivalTime(i); % start immediatly
                 waiting(i) = 0;
                 timeEnd(i) = timeStart(i) + refuelTime(i);
-                pumpTime(j) = timeEnd(i);
+                pumpTime(j) = timeEnd(i); % pump now busy until this time
                 pumpUsed(i) = j;
                 lineUsed(i) = lineMap(j);
                 assigned = true;
@@ -123,7 +123,7 @@ function simulateQueue(cust, x, y)
             end
         end
 
-        % if all pumps busy
+        % -- if all pumps busy --
         if ~assigned
             [soonest, whichPump] = min(pumpTime);
             timeStart(i) = max(arrivalTime(i), soonest);
@@ -134,7 +134,7 @@ function simulateQueue(cust, x, y)
             lineUsed(i) = lineMap(whichPump);
         end
 
-        % adjust first vehicle for clean output
+        % -- adjust first vehicle for clean output -- 
         if i == 1
             RN_refuel(i) = -1;
             interArrTime(i) = -1;
