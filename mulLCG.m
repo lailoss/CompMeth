@@ -1,6 +1,6 @@
-function output = mixedLCG(maxVal)
-    a = 1664525;
-    c = 1013904223;
+function r = mulLCG(maxVal)
+    a = 16807;
+    c = 0;
     m = 2^31 - 1;
     seed = floor(rand() * (m - 1)) + 1;
     r = mod((a * seed + c), m);
