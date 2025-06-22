@@ -23,7 +23,11 @@ function simulateQueue(cust, peakTime, rngChoice)
     lineUsed = zeros(1, cust);
 
     pumpTime = zeros(1,4);
-    lineMap = [1 1 2 2];
+    lineMap = [1 2 1 2]; % Or keep it if you still want logical grouping
+
+    % RANDOMIZE PUMP CHECK ORDER (shuffle for fairness)
+    pumpOrder = randperm(4);
+
 
     % -- load interarrival time based on peak hours or not --
     if peakTime == 9
@@ -85,7 +89,7 @@ function simulateQueue(cust, peakTime, rngChoice)
 
         % check for available pump
         assigned = false;
-        for j = 1:4
+        for j = pumpOrder
             if pumpTime(j) <= arrivalTime(i)
                 timeStart(i) = arrivalTime(i);
                 waiting(i) = 0;
