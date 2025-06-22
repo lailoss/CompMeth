@@ -1,7 +1,7 @@
 % simulateQueue.m (handles vehicle arrivals. queue assign , refueling, logs)
 % feqhahdelilah - member 1 (main simulation n coordination)
 
-function simulateQueue(cust, x, y)
+function simulateQueue(cust, peakTime)
 
     petrolTypeArr = cell(1, cust);  % --type of minyak--
     literArr = zeros(1, cust);      % --fuel quantity--
@@ -26,7 +26,7 @@ function simulateQueue(cust, x, y)
     lineMap = [1 1 2 2];
 
     % -- load interarrival time based on peak hours or not --
-    if y == 9
+    if peakTime == 9
        inter = interArrivalTime('p');
     else
        inter = interArrivalTime('n');

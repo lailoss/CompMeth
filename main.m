@@ -13,7 +13,7 @@ function main()
     disp('9 - Peak Hours');
     peakTime = input('Enter 0 or 9: ');
 
-    if ~ismember(peakTime, [0, 9])
+    if peakTime ~= 0 && peakTime ~= 9
         disp('Invalid input. Please restart the simulation and try again.');
         return;
     end

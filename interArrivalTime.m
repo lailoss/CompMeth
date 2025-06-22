@@ -1,5 +1,5 @@
 function IAT=interArrivalTime(status)
-     switch mode
+     switch status
         case 'p'  % Peak hours: shorter gaps, more frequent cars
             IAT.n = [1, 2, 3, 4, 5];  % in minutes
             probs   = [0.30, 0.25, 0.20, 0.15, 0.10]; %MAY CHANGE 
