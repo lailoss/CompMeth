@@ -1,10 +1,6 @@
 function IAT = interArrivalTime(status)
     switch status
 
-        case 'p'  % Peak hours
-            IAT.n = [1, 2, 3];
-            probs = [0.50, 0.30, 0.20];
-
         case 'p'  % Peak hours (shorter interarrival times)
             IAT.n = [1, 2, 3];
             probs = [0.50, 0.35, 0.15];  % Higher chance for 1 and 2 minutes
