@@ -125,6 +125,16 @@ function simulateQueue(cust, peakTime)
         fprintf('%3d %10s %8.0f %8.2f %10.0f %10.0f %6d\n', i, petrolTypeArr{i}, literArr(i), totalPrice(i), arrivalTime(i), timeStart(i), pumpUsed(i));
     end
 
+    fprintf('\n---------- FULL VEHICLE DETAILS TABLE ----------\n');
+    fprintf('%3s %10s %8s %8s %10s %10s %10s %10s %6s %6s\n', ...
+        'No', 'Petrol', 'Qty', 'Total', 'Arrival', 'InterArr', 'Start', 'End', 'Pump', 'Wait');
+
+    for i = 1:cust
+        fprintf('%3d %10s %8.0f %8.2f %10.0f %10.0f %10.0f %10.0f %6d %6.0f\n', ...
+            i, petrolTypeArr{i}, literArr(i), totalPrice(i), ...
+            arrivalTime(i), interArrTime(i), timeStart(i), timeEnd(i), pumpUsed(i), waiting(i));
+    end
+
     % -- Log actions by time --
     fprintf('\n---------------- LOG ----------------\n');
     for t = 0:max(timeEnd)
@@ -137,4 +147,15 @@ function simulateQueue(cust, peakTime)
             end
         end
     end
+    % --- Evaluation Statistics ---
+    avgWait = mean(waiting);
+    avgSystemTime = mean(timeEnd - arrivalTime);
+    probWait = sum(waiting > 0) / cust;
+    avgServiceTime = mean(refuelTime);
+
+    fprintf('\n---------- SIMULATION EVALUATION ----------\n');
+    fprintf('Average waiting time: %.2f minutes\n', avgWait);
+    fprintf('Average time in system: %.2f minutes\n', avgSystemTime);
+    fprintf('Probability that a vehicle has to wait: %.2f%%\n', probWait * 100);
+    fprintf('Average refueling time: %.2f minutes\n', avgServiceTime);
 end
