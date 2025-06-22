@@ -1,11 +1,11 @@
 function IAT = interArrivalTime(status)
     switch status
         case 'p'  % Peak hours
-            IAT.n = [1, 2, 3, 4, 5];
-            probs = [0.30, 0.25, 0.20, 0.15, 0.10];
+            IAT.n = [1, 2, 3];
+            probs = [0.50, 0.30, 0.20];
 
         case 'n'  % Non-peak hours
-            IAT.n = [3, 4, 5, 6, 7];
+            IAT.n = [1,2,3,4,5];
             probs = [0.10, 0.20, 0.30, 0.25, 0.15];
 
         otherwise
