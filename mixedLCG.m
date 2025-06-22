@@ -5,5 +5,5 @@ function output = mixedLCG(maxVal)
 
     seed = floor(rand() * (m - 1)) + 1;
     x = mod((a * seed + c), m);
-    r = mod(x, maxVal)+1; %ensures range [1,maxVal]
+    output = floor(x / m * maxVal) + 1; %ensures range [1,maxVal]
 end
