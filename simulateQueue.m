@@ -112,7 +112,7 @@ function simulateQueue(cust, peakTime, rngChoice)
         % adjust first vehicle for clean output
         if i == 1
             RN_refuel(i) = -1;
-            interArrTime(i) = -1;
+            interArrTime(i) = 0; %nani was here
             timeStart(i) = 0;
             waiting(i) = 0;
         end
