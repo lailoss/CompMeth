@@ -119,28 +119,63 @@ function simulateQueue(cust, peakTime, rngChoice)
     end
 
     % -- Display Summary --
+    fprintf(' ');
     fprintf('\n---------------- SIMULATION RESULT ----------------\n');
-    fprintf('%3s %10s %8s %8s %10s %10s %6s\n', 'No', 'Petrol', 'Qty', 'Total', 'Arrival', 'Start', 'Pump');
+    fprintf('%3s %10s %8s %8s %10s %10s %6s\n',...
+    'VehicleNo', 'Petrol', 'Qty', 'Total', 'Arrival', 'Start', 'Pump');
     for i = 1:cust
-        fprintf('%3d %10s %8.0f %8.2f %10.0f %10.0f %6d\n', i, petrolTypeArr{i}, literArr(i), totalPrice(i), arrivalTime(i), timeStart(i), pumpUsed(i));
+        fprintf('%3d %10s %8.0f %8.2f %10.0f %10.0f %6d\n',...
+        i, petrolTypeArr{i}, literArr(i), totalPrice(i), arrivalTime(i), timeStart(i), pumpUsed(i));
     end
 
     fprintf('\n---------- FULL VEHICLE DETAILS TABLE ----------\n');
-    fprintf('%3s %10s %8s %8s %10s %10s %10s %10s %6s %6s\n', ...
-        'No', 'Petrol', 'Qty', 'Total', 'Arrival', 'InterArr', 'Start', 'End', 'Pump', 'Wait');
+    fprintf('%-10s %-10s %-6s %-8s %-8s %-10s %-8s %-8s %-6s %-6s\n', ...
+        'VehicleNo', 'Petrol', 'Qty', 'Total', 'Arrival', 'InterArr', 'Start', 'End', 'Pump', 'Wait');
 
     for i = 1:cust
-        fprintf('%3d %10s %8.0f %8.2f %10.0f %10.0f %10.0f %10.0f %6d %6.0f\n', ...
+        fprintf('%-10d %-10s %-6.0f %-8.2f %-8.0f %-10.0f %-8.0f %-8.0f %-6d %-6.0f\n', ...
             i, petrolTypeArr{i}, literArr(i), totalPrice(i), ...
             arrivalTime(i), interArrTime(i), timeStart(i), timeEnd(i), pumpUsed(i), waiting(i));
     end
+    
+    % -- Display Pump Usage -- 
+    fprintf(' ');
+    fprintf('\n---------------- PETROL PUMP USAGE ----------------\n');
+    fprintf('%-10s | %-20s %-15s %-15s | %-20s %-15s %-15s\n',...
+    'VehicleNo', 'Pump1:RefuellingTime', 'Pump1:Start', 'Pump1:End',...
+    'Pump2:RefuellingTime', 'Pump2:Start', 'Pump2:End');
+    for i = 1:cust
+        if (pumpUsed(i)== 1)
+            fprintf('%-10d | %-20.0f %-15.0f %-15.0f | %-20s %-15s %-15s\n',...
+            i, refuelTime(i), timeStart(i), timeEnd(i), '-','-', '-');
+        elseif (pumpUsed(i)== 2)
+            fprintf('%-10d | %-20s %-15s %-15s | %-20.0f %-15.0f %-15.0f\n',...
+            i, '-','-', '-', refuelTime(i), timeStart(i), timeEnd(i));
+        end
+    end
+    
+    fprintf(' ');
+    fprintf('%-10s | %-20s %-15s %-15s | %-20s %-15s %-15s\n',...
+    'VehicleNo', 'Pump3:RefuellingTime', 'Pump3:Start', 'Pump3:End',...
+    'Pump4:RefuellingTime', 'Pump4:Start', 'Pump4:End');
+    for i = 1:cust
+        if (pumpUsed(i)== 3)
+            fprintf('%-10d | %-20.0f %-15.0f %-15.0f | %-20s %-15s %-15s\n',...
+            i, refuelTime(i), timeStart(i), timeEnd(i), '-','-', '-');
+        elseif (pumpUsed(i)== 4)
+            fprintf('%-10d | %-20s %-15s %-15s | %-20.0f %-15.0f %-15.0f\n',...
+            i, '-','-', '-', refuelTime(i), timeStart(i), timeEnd(i));
+        end
+    end
 
     % -- Log actions by time --
+    fprintf(' ');
     fprintf('\n---------------- LOG ----------------\n');
     for t = 0:max(timeEnd)
         for i = 1:cust
             if arrivalTime(i) == t
-                fprintf('Vehicle %d arrived at %dmin and started refueling at Pump %d with %s.\n', i, t, pumpUsed(i), petrolTypeArr{i});
+                fprintf('Vehicle %d arrived at %dmin and started refueling at Pump %d with %s.\n',...
+                i, t, pumpUsed(i), petrolTypeArr{i});
             end
             if timeEnd(i) == t
                 fprintf('Vehicle %d finished and left at %dmin.\n', i, t);

@@ -1,11 +1,12 @@
-% main.m
+% main.m 
 % feqhah delilah main - member 1 (main simulation n coordination)
 
 function main()
     clc;
     clear;
 
-    cust = input('How many vehicles to simulate? '); % --- ask user how many vehicles to simulate ---
+    % --- ask user how many vehicles to simulate ---
+    cust = input('How many vehicles to simulate? ');
 
     % input peak or non-peak
     disp('Choose Time Type:');
