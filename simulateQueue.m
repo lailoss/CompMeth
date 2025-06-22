@@ -1,7 +1,7 @@
 % simulateQueue.m (handles vehicle arrivals. queue assign , refueling, logs)
 % feqhahdelilah - member 1 (main simulation n coordination)
 
-function simulateQueue(cust, peakTime)
+function simulateQueue(cust, peakTime, rngChoice)
 
     petrolTypeArr = cell(1, cust);  % --type of minyak--
     literArr = zeros(1, cust);      % --fuel quantity--
@@ -36,8 +36,8 @@ function simulateQueue(cust, peakTime)
     rt = refuelingTime();
 
     for i = 1:cust
-        % Use only Mixed LCG for all random numbers
-        num = mixedLCG(100);
+        % Use selected RNG for all random numbers
+        num = getRandom(100, rngChoice);
 
         % -- determine petrol type by CDF --
         if num <= pt.cdf(1)*100
@@ -52,11 +52,11 @@ function simulateQueue(cust, peakTime)
         end
 
         % -- determine quantity of fuel --
-        literArr(i) = mixedLCG(50);
+        literArr(i) = getRandom(50, rngChoice);
         totalPrice(i) = literArr(i) * pricePerLiter(i);
 
         % -- inter-arrival RNG --
-        RN_arrival(i) = mixedLCG(100);
+        RN_arrival(i) = getRandom(100, rngChoice);
 
         % -- determine inter arrival time --
         for j = 1:length(inter.cdf)
@@ -73,7 +73,7 @@ function simulateQueue(cust, peakTime)
         end
 
         % -- refueling time RNG --
-        RN_refuel(i) = mixedLCG(100);
+        RN_refuel(i) = getRandom(100, rngChoice);
 
         % determine refueling duration
         for j = 1:length(rt.cdf)
@@ -147,6 +147,7 @@ function simulateQueue(cust, peakTime)
             end
         end
     end
+
     % --- Evaluation Statistics ---
     avgWait = mean(waiting);
     avgSystemTime = mean(timeEnd - arrivalTime);
@@ -158,4 +159,15 @@ function simulateQueue(cust, peakTime)
     fprintf('Average time in system: %.2f minutes\n', avgSystemTime);
     fprintf('Probability that a vehicle has to wait: %.2f%%\n', probWait * 100);
     fprintf('Average refueling time: %.2f minutes\n', avgServiceTime);
+end
+
+% --- Helper function to choose RNG ---
+function r = getRandom(maxVal, rngChoice)
+    if rngChoice == 1
+        r = mixedLCG(maxVal);
+    elseif rngChoice == 2
+        r = mulLCG(maxVal);
+    else
+        error('Invalid RNG type selected.');
+    end
 end

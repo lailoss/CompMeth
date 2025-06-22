@@ -18,8 +18,13 @@ function main()
         return;
     end
 
+    disp('Choose Random Number Generator type:');
+    disp('1 - Mixed LCG');
+    disp('2 - Multiplicative LCG');
+    rngChoice = input('Enter your choice (1 or 2): ');
+
     % --- call the main simulation function using Mixed LCG only ---
-    simulateQueue(cust, peakTime);
+    simulateQueue(cust, peakTime, rngChoice);
 
     disp('Simulation complete.');
 end
